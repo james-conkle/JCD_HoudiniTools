@@ -1,0 +1,15 @@
+import toolutils
+
+# hicon:/SVGIcons.index?TOOLS_zoom.svg
+# Resets non camera FOV
+viewer = toolutils.sceneViewer()
+vp = viewer.curViewport()
+
+if vp.camera() is not None:
+    hou.ui.displayMessage("Exit camera first (Ctrl+1)")
+else:
+    cam = vp.defaultCamera()
+    stashed = cam.stash()
+    stashed.setAperture(41.4214)  # Houdini default
+    stashed.setFocalLength(45)
+    vp.setDefaultCamera(stashed)
