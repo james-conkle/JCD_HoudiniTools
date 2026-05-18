@@ -1,0 +1,77 @@
+import hou
+import os
+import re
+import shutil
+
+# hicon:/SVGIconsUI.index?BUTTONS_subnet.svg
+# Match _v0001 style specifically
+version_regex = re.compile(r"(.*)_v(\d+)(\.\w+)$")
+
+def main():
+    hip = hou.hipFile
+    current_path = hip.path()
+    directory = os.path.dirname(current_path)
+    filename = os.path.basename(current_path)
+
+    match = version_regex.match(filename)
+
+    if match:
+        base, number, ext = match.groups()
+        next_version = str(int(number) + 1).rjust(len(number), '0')
+        new_name = f"{base}_v{next_version}{ext}"
+    else:
+        # fallback if no version exists
+        base, ext = os.path.splitext(filename)
+        new_name = f"{base}_v0001{ext}"
+
+    new_path = os.path.join(directory, new_name)
+
+    # Overwrite check
+    if os.path.isfile(new_path):
+        overwrite = hou.ui.displayConfirmation(
+            f'The file "{new_name}" already exists. Overwrite?'
+        )
+        if not overwrite:
+            return
+
+    # Save new version
+    hip.save(new_path)
+
+    # --- MOVE OLD VERSIONS TO ARCHIVE ---
+    archive_dir = os.path.join(directory, "archive")
+    os.makedirs(archive_dir, exist_ok=True)
+
+    # Build pattern for matching all versions
+    if match:
+        base_pattern = re.escape(match.group(1))
+        ext_pattern = re.escape(match.group(3))
+    else:
+        base_pattern = re.escape(base)
+        ext_pattern = re.escape(ext)
+
+    pattern = re.compile(rf"{base_pattern}_v(\d+){ext_pattern}$")
+
+    versions = []
+
+    for f in os.listdir(directory):
+        m = pattern.match(f)
+        if m:
+            v = int(m.group(1))
+            versions.append((v, f))
+
+    if not versions:
+        return
+
+    versions.sort()
+    latest_version = versions[-1][0]
+
+    for v, fname in versions:
+        if v != latest_version:
+            src = os.path.join(directory, fname)
+            dst = os.path.join(archive_dir, fname)
+
+            if not os.path.exists(dst):
+                print(f"Moving {fname} -> archive/")
+                shutil.move(src, dst)
+
+main()
