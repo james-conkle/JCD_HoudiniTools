@@ -1,0 +1,12 @@
+## HQueue Client "NETWORK SERVICE"
+
+**For Windows Client - Scheduled Task (recommended for Hqueue Plugin & License Discoverty (Plus GPU access?)):**
+1. Open Task Scheduler (`taskschd.msc`).
+2. Locate the HQueue Client task.
+3. Right-click → Properties → General tab.
+4. Click "Change User or Group" → enter your Windows username → Check Names → OK.
+5. Select "Run only when user is logged on" (keeps the client in your interactive session, critical for GPU access and credential tokens).
+6. Click OK (may prompt for your password).
+7. Right-click the task → End to stop the current NETWORK SERVICE instance.
+8. Make sure you're logged into the render node (via Parsec or local).
+9. Right-click → Run to relaunch under your account.
