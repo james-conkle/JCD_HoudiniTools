@@ -1,6 +1,6 @@
 ## HQueue Client "NETWORK SERVICE"
 
-**For Windows Client - Scheduled Task (recommended for Hqueue Plugin & License Discoverty (Plus GPU access?)):**
+**For Windows Client - Scheduled Task (recommended for HQueue Plugin & License Discovery, plus GPU access):**
 1. Open Task Scheduler (`taskschd.msc`).
 2. Locate the HQueue Client task.
 3. Right-click → Properties → General tab.
@@ -10,3 +10,11 @@
 7. Right-click the task → End to stop the current NETWORK SERVICE instance.
 8. Make sure you're logged into the render node (via Parsec or local).
 9. Right-click → Run to relaunch under your account.
+
+## HQueue ROP Node 
+**General Settings:**
+- **HQueue Server:** `http://origin:5000`
+- **Windows HFS Path:** `C:\Program Files\Side Effects Software\Houdini 21.0.700`
+
+**Advanced Settings:**
+Batch all renders into a single job or group them together. Houdini relaunching for each individual render job adds significant overhead - grouping frames into one submission minimizes restart time.
