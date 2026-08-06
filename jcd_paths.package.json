@@ -8,8 +8,5 @@
         { "houdini_os != 'windows'": "${JCD-$HOME/Dropbox/JCD}" }
       ]
     },
-    {
-      "JCD_PROJECTS_ROOT": "${JCD_PROJECTS_ROOT-$JCD/projects}"
-    }
   ]
 }
