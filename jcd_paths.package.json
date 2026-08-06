@@ -1,0 +1,15 @@
+{
+  "enable": true,
+  "load_package_once": true,
+  "env": [
+    {
+      "JCD": [
+        { "houdini_os == 'windows'": "${JCD-D:/Dropbox/JCD}" },
+        { "houdini_os != 'windows'": "${JCD-$HOME/Dropbox/JCD}" }
+      ]
+    },
+    {
+      "JCD_PROJECTS_ROOT": "${JCD_PROJECTS_ROOT-$JCD/projects}"
+    }
+  ]
+}
